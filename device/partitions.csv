@@ -1,0 +1,11 @@
+# Name,   Type, SubType, Offset,  Size, Flags
+# Note: if you change the phy_init or app partition offset, make sure to change the offset in Kconfig.projbuild
+nvs,      data, nvs,     0x9000,  0x6000,
+phy_init, data, phy,     0xf000,  0x1000,
+factory,  app,  factory, ,        8M,
+# 切片包分区已删除（2026-10-17 起 GTS1 内嵌 app .rodata，gtam_glue.cpp 直接读 .rodata
+# 段，本地无矢量数据兜底，包外区域填背景色）。
+# ★ WiFi 投屏帧池（2026-10-28 二轮意见②）：PSRAM 4MB（16×256KB 桶）不够，改用 flash
+#   16MB 分区做桶池后端（esp_partition_write/read，桶算法不变 Q_SLOTS 16→64）。
+castpool, data, spiffs,  ,        16M,
+# 余量 ~8MB 备用（后续可分 bakpool 等）
